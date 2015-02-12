@@ -47,17 +47,22 @@ def main():
     args = parse_arguments()
     if args.log:
         set_log(config.log.path)
+    
+    logging.info("Beginning of Disk usage monitor ...")
     try:
         disk_usage = DiskUsage(args.mount)
         if cmp_usage(disk_usage.get_usage(), args.usage):
             logging.info("Disk usage[%s] is over the warning line[%s]." %\
                          (disk_usage.get_usage(), args.usage))
-            send_mail(subject = '[Warning] %s space has used of %s' % (disk_usage.get_usage(), args.mount),
+            send_mail(subject = '[Warning] %s space has been used of %s' % (disk_usage.get_usage(), args.mount),
                       to = config.maillist.subscribers,
                       content = gen_content(args.mount))
 
     except Exception as err:
         logging.error("Error message: %s" % err)
+    finally:
+        logging.info("Ending of Disk usage monitor ...")
+
 
 if __name__ == "__main__":
     main()

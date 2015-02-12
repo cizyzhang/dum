@@ -1,6 +1,11 @@
 import os
+import sys
+import logging
 
+sys.path.append(os.path.realpath(os.path.abspath("%s/../" % os.path.dirname(__file__))))
 from util import call, RunCommandError
+
+logger = logging.getLogger(__name__)
 
 class DiskUsage(object):
     """ Use 'df -h' to get disk usage

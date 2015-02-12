@@ -40,7 +40,7 @@ def cmp_usage(usage1, usage2):
 
 def gen_content(mount_point):
     dir_hunter = DirHunter(mount_point)
-    return dir_hunter.get_summary() + dir_hunter.get_detail()
+    return dir_hunter.gen_summary() + dir_hunter.gen_detail()
 
 
 def main():

@@ -5,12 +5,12 @@ def call(cmd):
     """
     status, output = commands.getstatusoutput(cmd)
     if status:
-        raise CommandFailException("Call command [%s] failed: %d" % (cmd, status))
+        raise RunCommandError("Call command [%s] failed: %d" % (cmd, status))
     else:
         return ' '.join(output.split())
 
 
-class CallCommandError(Exception):
+class RunCommandError(Exception):
     def __init__(self, msg):
         self.message = msg
 

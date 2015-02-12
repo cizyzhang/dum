@@ -16,3 +16,12 @@ def size_converter(size, unit):
     """ Convert the size base on bytes to other units
     """
     return round(float(size)/unit_to_bytes[unit], 2)
+
+def size_human_readable(size):
+    """ Return a human readable size which near to
+        the given size based on Byte
+    """
+    for unit in 'TGMKB':
+        if size >= unit_to_bytes[unit]:
+            return str(size_converter(size, unit)) + unit
+    return str(size) + 'B'

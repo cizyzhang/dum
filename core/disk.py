@@ -62,11 +62,42 @@ class DirHunter(object):
 
 
     def _get_dir_size(self, parent_dir, dir):
-        ### Bug: If some subdir cann't be readable, it will print warning messages
+        ### Bug: If some subdirs cann't be readable,
+        ### it will print warning messages by using the follow command
         cmd = 'du -sb %s' % os.path.join(parent_dir, dir)
         try:
             return int(call(cmd).split()[0])
         except RunCommandError as err:
             logger.error("Run command failed: %s" % err)
             return None
+
+
+class DiskUsage(object):
+    """ Use 'df -h' to get disk usage
+    """
+    def __init__(self, mount_point):
+        self._mount = mount_point
+        self._info = self._get_info()
+
+    def _get_info(self):
+        cmd = 'df -h | grep -w ' + self._mount
+        try:
+            output = call(cmd)
+        except RunCommandError as err:
+            logger.error('Call cmd [%s] failed, err: %s' % err)
+        
+        return output.split()
+
+
+    def get_total(self):
+        return self._info[0]
+
+    def get_used(self):
+        return self._info[1]
+
+    def get_free(self):
+        return self._info[2]
+
+    def get_usage(self):
+        return self._info[3]
 

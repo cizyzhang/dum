@@ -10,8 +10,7 @@ import logging
 
 from util import set_log, Configuration
 
-from core.disk import DirHunter
-from core.usage import DiskUsage
+from core.disk import DirHunter, DiskUsage
 from core.mailbox import send_mail
 
 
@@ -40,7 +39,8 @@ def cmp_usage(usage1, usage2):
 
 def gen_content(mount_point):
     dir_hunter = DirHunter(mount_point)
-    return dir_hunter.gen_summary() + dir_hunter.gen_detail()
+    return dir_hunter.gen_detail()
+#    return dir_hunter.gen_summary() + dir_hunter.gen_detail()
 
 
 def main():

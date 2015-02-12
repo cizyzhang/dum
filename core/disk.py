@@ -29,12 +29,12 @@ class DirHunter(object):
 
     def gen_summary(self):
         summary = 'Summary of %s:\n' % self._mount
-        for dir in os.listdir(self._mount):
+        for dir in sorted(os.listdir(self._mount)):
             size = self._get_dir_size(self._mount, dir)
             if not size:
-                summary += '-\t %s\n' % dir
+                summary += '{:<12}'.format('-') + dir + '\n'
             else:
-                summary += '%s\t %s\n' % (size_human_readable(size), dir)
+                summary += '{:<12}'.format(size_human_readable(size)) + dir + '\n'
 
         logger.info(summary)
         return summary
@@ -43,21 +43,21 @@ class DirHunter(object):
         specified_dirs = [os.path.join(self._mount, dir)\
                           for dir in config.common.huntdirs.split()]
 
-        detail = ''
+        detail = '\n'
         for dir in specified_dirs:
-            detail += dir
+            detail += "Details of %s :\n" % dir
             logger.info("Hunt dirs of %s:" % dir)
-            for subdir in os.listdir(dir):
+            for subdir in sorted(os.listdir(dir)):
                 if os.path.islink(os.path.join(dir, subdir)):
                     logger.debug("Ignore link file: %s" % subdir)
                     continue
                 size = self._get_dir_size(dir, subdir)
                 if not size:
                     logger.error("Unkown size of %s" % subdir)
-                    continue
+                    detail += '{:<12}'.format('-') + subdir + '\n'
                 if size > self._maxsize:
                     logger.info("Found large dir/file: %s" % subdir)
-                    detail += '%s\t %s\n' % (size_human_readable(size), subdir)
+                    detail += '{:<12}'.format(size_human_readable(size)) + subdir + '\n'
         return detail
 
 

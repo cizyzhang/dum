@@ -46,11 +46,12 @@ def gen_content(mount_point):
 def main():
     args = parse_arguments()
     if args.log:
-        set_log(config.log.path)
+        set_log(file=config.log.path, level=logging.DEBUG)
     
     logging.info("Beginning of Disk usage monitor ...")
     try:
         disk_usage = DiskUsage(args.mount)
+        logging.info("Disk usage of %s : %s" % (args.mount, disk_usage.get_usage))
         if cmp_usage(disk_usage.get_usage(), args.usage):
             logging.info("Disk usage[%s] is over the warning line[%s]." %\
                          (disk_usage.get_usage(), args.usage))
@@ -59,7 +60,7 @@ def main():
                       content = gen_content(args.mount))
 
     except Exception as err:
-        logging.error("Error message: %s" % err)
+        logging.exception("Error message: %s" % err)
     finally:
         logging.info("Ending of Disk usage monitor ...")
 

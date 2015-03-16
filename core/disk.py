@@ -90,14 +90,14 @@ class DiskUsage(object):
 
 
     def get_total(self):
-        return self._info[0]
+        return self._info[-5]
 
     def get_used(self):
-        return self._info[1]
+        return self._info[-4]
 
     def get_free(self):
-        return self._info[2]
+        return self._info[-3]
 
     def get_usage(self):
-        return self._info[3]
+        return self._info[-2]
 
